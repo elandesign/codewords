@@ -1,2 +1,2 @@
 web: rackup
-js: webpack --watch
+webpack: webpack --watch
