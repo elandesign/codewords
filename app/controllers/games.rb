@@ -1,23 +1,15 @@
 Codewords::App.controllers :games do
-  
-  # get :index, :map => '/foo/bar' do
-  #   session[:foo] = 'bar'
-  #   render 'index'
-  # end
+  get :index, map: '/games' do
+    @games = Game.in_progress
+  end
 
-  # get :sample, :map => '/sample/url', :provides => [:any, :js] do
-  #   case content_type
-  #     when :js then ...
-  #     else ...
-  # end
+  post :game do
+    game = Game.new
+    game.start!(Game::WORDS, Game::SPIES)
+    game.to_json(only: [:id, :spymaster])
+  end
 
-  # get :foo, :with => :id do
-  #   'Maps to url '/foo/#{params[:id]}''
-  # end
-
-  # get '/example' do
-  #   'Hello world!'
-  # end
-  
-
+  get :game, :with => :id do
+    game = Game.find(params[:id])
+  end
 end
