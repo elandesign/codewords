@@ -13,14 +13,7 @@ module.exports = {
   module: {
     loaders: [
       { test: /\.js?$/, loaders: ['react-hot', 'babel'], exclude: /node_modules/ },
-      { test: /\.js$/, exclude: /node_modules/, loader: 'babel-loader'},
-      { test: /\.css$/, loader: "style!css" }
+      { test: /\.js$/, exclude: /node_modules/, loader: 'babel-loader'}
     ]
-  },
-  resolve: {
-    alias: {
-      ap:     path.join(__dirname, "fe", "ap"),
-      shared: path.join(__dirname, "fe", "ap", "shared"),
-    }
   }
 };

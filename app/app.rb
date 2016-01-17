@@ -6,6 +6,10 @@ module Codewords
 
     enable :sessions
 
+    get "/" do
+      send_file "app/views/index.html"
+    end
+
     ##
     # Caching support.
     #

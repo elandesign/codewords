@@ -7,3 +7,4 @@ vendor/gems/*
 db/*.db
 .*.sw*
 node_modules
+public/javascripts/codewords.js
