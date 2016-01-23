@@ -2,6 +2,7 @@ class CreateGames < ActiveRecord::Migration
   def self.up
     create_table :games do |t|
       t.string :state
+      t.string :turn
       t.text :board
       t.string :spymaster, :teams
       t.timestamps null: false

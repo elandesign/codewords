@@ -15,60 +15,54 @@ class Game < ActiveRecord::Base
 
   scope :in_progress, -> { where(state: [:red_turn, :blue_turn]) }
 
-  aasm column: :state do
-    state :setup, initial: true
-    state :starting
-    state :red_turn
+  aasm :turn, column: :turn do
+    state :red_turn, initial: true
     state :blue_turn
+
+    event :end_turn do
+      transitions from: :red_turn, to: :blue_turn
+      transitions from: :blue_turn, to: :red_turn
+
+      before do
+        if winner == :red
+          red_wins
+        elsif winner == :blue
+          blue_wins
+        end
+      end
+    end
+  end
+
+  aasm :state, column: :state do
+    state :setup, initial: true
+    state :playing
     state :red_wins
     state :blue_wins
 
     event :start do
-      transitions from: :setup, to: :starting
+      transitions from: :setup, to: :playing
 
       before do
         setup unless board.present?
       end
-
-      after do
-        if first_team == :red
-          start_red_turn!
-        else
-          start_blue_turn!
-        end
-      end
-    end
-
-    event :start_red_turn do
-      transitions from: [:starting, :blue_turn], to: :red_turn
-    end
-
-    event :start_blue_turn do
-      transitions from: [:starting, :red_turn], to: :blue_turn
-    end
-
-    event :end_turn do
-      after do
-        if winner == :red && red_turn?
-          win!
-        elsif winner == :blue && blue_turn?
-          win!
-        elsif winner.present?
-          lose!
-        end
-      end
-      transitions from: :red_turn, to: :blue_turn
-      transitions from: :blue_turn, to: :red_turn
     end
 
     event :lose do
-      transitions from: :red_turn, to: :blue_wins
-      transitions from: :blue_turn, to: :red_wins
+      transitions from: :playing, to: :red_wins, if: :blue_turn?
+      transitions from: :playing, to: :blue_wins, if: :red_turn?
     end
 
     event :win do
-      transitions from: :red_turn, to: :red_wins
-      transitions from: :blue_turn, to: :blue_wins
+      transitions from: :playing, to: :red_wins, if: :red_turn?
+      transitions from: :playing, to: :blue_wins, if: :blue_turn?
+    end
+
+    event :red_wins do
+      transitions from: :playing, to: :red_wins
+    end
+
+    event :blue_wins do
+      transitions from: :playing, to: :blue_wins
     end
   end
 
@@ -132,6 +126,7 @@ class Game < ActiveRecord::Base
     set_spies(ASSASSIN, tiles.shift(1))
     self.spymaster = SecureRandom.urlsafe_base64
     self.teams = SecureRandom.urlsafe_base64
+    self.turn = first_turn
     self
   end
 
@@ -167,11 +162,11 @@ class Game < ActiveRecord::Base
 
   # Internal: Which team goes first?
   # 
-  def first_team
+  def first_turn
     if red_spies.length > blue_spies.length
-      :red
+      :red_turn
     else
-      :blue
+      :blue_turn
     end
   end
 end

@@ -29,7 +29,7 @@ RSpec.describe Game do
     end
 
     it "should let the blue team go first" do
-      expect(game.first_team).to eq(:blue)
+      expect(game.first_turn).to eq(:blue_turn)
     end
 
     describe "when started" do
@@ -37,7 +37,7 @@ RSpec.describe Game do
         game.start
       end
 
-      it "should transition to the correct state when starting" do
+      it "should start in the correct state" do
         expect(game).to be_blue_turn
       end
 

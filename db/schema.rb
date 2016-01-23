@@ -15,6 +15,7 @@ ActiveRecord::Schema.define(version: 1) do
 
   create_table "games", force: :cascade do |t|
     t.string   "state"
+    t.string   "turn"
     t.text     "board"
     t.string   "spymaster"
     t.string   "teams"
