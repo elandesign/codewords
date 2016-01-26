@@ -1,7 +1,8 @@
+ENV["RACK_ENV"] ||= "development"
+
 require "bundler"
 Bundler.require
 
-ENV["RACK_ENV"] ||= "development"
 require_relative "../codewords"
 
 %w{config/initializers lib models}.each do |load_path|
