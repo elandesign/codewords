@@ -5,8 +5,8 @@ class Game < ActiveRecord::Base
   RED_SPY = 'red'
   BLUE_SPY = 'blue'
   ASSASSIN = 'assassin'
-
-  DICTIONARY = YAML.load_file(Pathname.new(Padrino.root).join("config", "words.yml"))
+  
+  DICTIONARY = YAML.load_file(Codewords.root.join("config", "dictionary.yml"))
   TILES = 25
   SPIES = 8
 

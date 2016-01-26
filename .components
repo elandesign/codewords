@@ -1,9 +1,0 @@
----
-:orm: activerecord
-:test: rspec
-:mock: none
-:script: none
-:renderer: erb
-:stylesheet: none
-:namespace: Codewords
-:migration_format: number

@@ -1,21 +1,42 @@
-RACK_ENV = 'test' unless defined?(RACK_ENV)
-require File.expand_path(File.dirname(__FILE__) + "/../config/boot")
-Dir[File.expand_path(File.dirname(__FILE__) + "/../app/helpers/**/*.rb")].each(&method(:require))
+ENV['RACK_ENV'] = 'test'
 
-RSpec.configure do |conf|
-  conf.include Rack::Test::Methods
+require 'bundler'
+
+Bundler.setup
+Bundler.require
+
+# spec/spec_helper.rb
+require 'rack/test'
+require 'rspec'
+require 'pry-byebug'
+require 'database_cleaner'
+require 'capybara/rspec'
+
+
+
+require File.expand_path('../../config/boot.rb', __FILE__)
+
+module RSpecMixin
+  include Capybara::RSpecMatchers
+  include Rack::Test::Methods
+  def app() Codewords end
+  def page() last_response.body end
 end
 
-# You can use this method to custom specify a Rack app
-# you want rack-test to invoke:
-#
-#   app Codewords::App
-#   app Codewords::App.tap { |a| }
-#   app(Codewords::App) do
-#     set :foo, :bar
-#   end
-#
-def app(app = nil, &blk)
-  @app ||= block_given? ? app.instance_eval(&blk) : app
-  @app ||= Padrino.application
+RSpec.configure do |config|
+  config.include RSpecMixin
+
+  config.before(:suite) do
+    DatabaseCleaner.strategy = :transaction
+    DatabaseCleaner.clean_with(:truncation)
+  end
+
+  config.before(:each) do
+    DatabaseCleaner.start
+  end
+
+  config.append_after(:each) do
+    DatabaseCleaner.clean
+  end
+
 end

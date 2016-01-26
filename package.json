@@ -2,7 +2,7 @@
   "name": "codewords",
   "version": "1.0.0",
   "description": "Online Multiplayer Codewords clone",
-  "main": "./app/client/codewords.js",
+  "main": "./client/codewords.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },

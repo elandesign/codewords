@@ -3,7 +3,7 @@ var path = require("path");
 module.exports = {
   context: __dirname,
   entry: {
-    codewords:  "./app/client/codewords.js",
+    codewords:  "./client/codewords.js",
   },
   output: {
     path: path.join(__dirname, 'public', 'javascripts'),
