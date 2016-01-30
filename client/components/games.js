@@ -1,4 +1,5 @@
 import React from 'react'
+import { Link } from 'react-router'
 import GamesStore from "../stores/gamesStore"
 
 class Games extends React.Component {
@@ -20,7 +21,9 @@ class Games extends React.Component {
       <ul>
         {
           this.state.games.map((game) => {
-            return <li key={game.id}>{game.id}</li>
+            return <li key={game.id}>
+              <Link to={`/games/${game.id}/${game.key}`}>{game.name}</Link>
+            </li>
           })
         }
       </ul>

@@ -1,16 +1,5 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
-import Games from './components/games'
+import routes from "./routes"
 
-let App = React.createClass({  
-  render() {
-    return (
-      <div>
-        <h1>Hello World</h1>
-        <Games />
-      </div>
-    );
-  }
-});
-
-ReactDOM.render(<App/>, document.getElementById("codewords"));
+ReactDOM.render(routes, document.getElementById("codewords"));

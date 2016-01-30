@@ -4,8 +4,8 @@ import GamesActions from "../actions/gamesActions"
 class GamesStore {
   constructor() {
     this.games = [
-      {id: 1, name: "woo"},
-      {id: 2, name: "wah"}
+      {id: 1, name: "woo", key: "woo"},
+      {id: 2, name: "wah", key: "wah"}
     ];
 
     this.bindListeners({
