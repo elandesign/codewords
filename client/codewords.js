@@ -1,13 +1,13 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
-import Game from './components/game'
+import Games from './components/games'
 
 let App = React.createClass({  
   render() {
     return (
       <div>
         <h1>Hello World</h1>
-        <Game />
+        <Games />
       </div>
     );
   }

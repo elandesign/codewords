@@ -13,8 +13,6 @@ class Game < ActiveRecord::Base
   has_many :players
   serialize :board
 
-  scope :in_progress, -> { where(state: [:red_turn, :blue_turn]) }
-
   aasm :turn, column: :turn do
     state :red_turn, initial: true
     state :blue_turn
@@ -111,6 +109,14 @@ class Game < ActiveRecord::Base
     board.select { |x| x[:type] == BLUE_SPY }
   end
 
+  def to_json(view = :teams)
+    if view == :spymaster
+      { board: board, turn: turn, state: state }.to_json
+    else
+      { board: board.map(&method(:team_view)), turn: turn, state: state }.to_json
+    end
+  end
+
   # Public: Set up a new game
   # tiles - the number of tiles to create
   # spies - the number of spies on each team (+1 on the starting team)
@@ -167,6 +173,14 @@ class Game < ActiveRecord::Base
       :red_turn
     else
       :blue_turn
+    end
+  end
+
+  def team_view(tile)
+    if tile[:revealed]
+      tile
+    else
+      tile.except(:type)
     end
   end
 end
